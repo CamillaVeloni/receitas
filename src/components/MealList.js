@@ -1,10 +1,15 @@
 import React from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import MealCardItem from './MealCardItem';
 
 const MealList = ({ receitasList, navigation }) => {
+  // Inicial state para favorite icon
+  const mealsFavorites = useSelector(({ meals }) => meals.favoriteMeals);
   const RenderReceitaItem = ({ item }) => {
+    const isFavorited = mealsFavorites.some(meal => meal.id === item.id);
+
     return (
       <MealCardItem
         titulo={item.titulo}
@@ -13,7 +18,11 @@ const MealList = ({ receitasList, navigation }) => {
         duracao={item.duracao}
         preço={item.preço}
         onNavigation={() =>
-          navigation.navigate('MealDetail', { mealId: item.id, mealTitle: item.titulo })
+          navigation.navigate('MealDetail', {
+            mealId: item.id,
+            mealTitle: item.titulo,
+            isFav: isFavorited,
+          })
         }
       />
     );

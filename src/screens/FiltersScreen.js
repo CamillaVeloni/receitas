@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react'; 
 import { View, Text, StyleSheet, Platform } from 'react-native'; 
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { useDispatch } from 'react-redux';
 
+import { setFilter } from '../store/actions/meals'
 import ButtonSwitch from '../components/ButtonSwitch';
 import HeaderBtn from '../components/HeaderBtn';
 
@@ -12,6 +14,8 @@ const FiltersScreen = ({ navigation }) => {
         isVegetariano: false, 
         isLactoseFree: false
     });
+
+    const dispatch = useDispatch();
 
     function filterHandler (value, name) { // handler para clique do switch button 
         setFilters(prevState => ({
@@ -32,8 +36,8 @@ const FiltersScreen = ({ navigation }) => {
             lactoseFree: filters.isLactoseFree
         }
 
-        console.log(appliedFilters);
-    }, [filters]); 
+        dispatch(setFilter(appliedFilters));
+    }, [filters, dispatch]); 
 
     useEffect(() => {
         // useEffect 'chama' saveFilters e por isso deve ser declarado como uma dependencia

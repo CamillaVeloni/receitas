@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'; // Permite selecionar um 'pedaço' do
 
 import { CATEGORIAS } from '../data/dummy-data';
 import MealList from '../components/MealList';
+import EmptyComponent from '../components/EmptyComponent';
 
 const CategoryMealsScreen = ({ navigation }) => { 
 
@@ -11,6 +12,9 @@ const CategoryMealsScreen = ({ navigation }) => {
     const availableMeals = useSelector(state => state.meals.filteredMeals)
 
     const receitasSelect = availableMeals.filter(({ categoryIds }) => categoryIds.includes(categID));
+
+    // Renderizar EmptyComponent se não existir nenhuma receita na categoria + filtros aplicados
+    if (receitasSelect.length === 0 || !receitasSelect) return <EmptyComponent text={`Nenhuma receita achada,\ntalvez verifique os filtros aplicados?`} />
 
     return ( 
         <MealList receitasList={receitasSelect} navigation={navigation}/>
